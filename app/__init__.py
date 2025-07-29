@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 
+# 修复第三方库警告
+from .utils.fix_warnings import fix_jieba_warnings
+fix_jieba_warnings()
+
 db = SQLAlchemy()
 migrate = Migrate()
 
