@@ -6,7 +6,191 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormEnhancements();
     initTooltips();
     initAnimations();
+    initPageTransitions();
+    initParticleSystem();
+    initAdvancedInteractions();
 });
+
+// 页面过渡动画
+function initPageTransitions() {
+    // 页面加载动画
+    const mainContent = document.querySelector('main');
+    if (mainContent) {
+        mainContent.classList.add('page-transition');
+        setTimeout(() => {
+            mainContent.classList.add('fade-in');
+        }, 100);
+    }
+
+    // 导航链接点击效果
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // 添加点击动画
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+}
+
+// 粒子系统
+function initParticleSystem() {
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+        createParticles(heroSection, 20);
+    }
+}
+
+function createParticles(container, count) {
+    const particles = document.createElement('div');
+    particles.className = 'particles';
+    container.appendChild(particles);
+
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            createParticle(particles);
+        }, i * 300);
+    }
+
+    // 持续创建粒子
+    setInterval(() => {
+        createParticle(particles);
+    }, 2000);
+}
+
+function createParticle(container) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // 随机位置和大小
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    
+    const size = 2 + Math.random() * 4;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    container.appendChild(particle);
+    
+    // 清理完成的粒子
+    setTimeout(() => {
+        if (particle.parentNode) {
+            particle.remove();
+        }
+    }, 25000);
+}
+
+// 高级交互效果
+function initAdvancedInteractions() {
+    // 鼠标追踪效果
+    initMouseTracker();
+    
+    // 卡片倾斜效果
+    initCardTilt();
+    
+    // 搜索框增强
+    initAdvancedSearch();
+    
+    // 情感标签动画
+    initEmotionTags();
+}
+
+// 鼠标追踪效果
+function initMouseTracker() {
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            this.style.transform = `
+                translateY(-8px) 
+                rotateX(${rotateX}deg) 
+                rotateY(${rotateY}deg)
+                scale(1.02)
+            `;
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+}
+
+// 卡片倾斜效果
+function initCardTilt() {
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transformOrigin = 'center center';
+            this.style.willChange = 'transform';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.willChange = 'auto';
+        });
+    });
+}
+
+// 高级搜索功能
+function initAdvancedSearch() {
+    const searchInputs = document.querySelectorAll('input[type="search"], input[name="q"]');
+    
+    searchInputs.forEach(input => {
+        // 创建搜索容器
+        if (!input.parentElement.classList.contains('search-container')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'search-container';
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+        }
+        
+        // 搜索建议功能
+        let suggestionTimeout;
+        input.addEventListener('input', function() {
+            clearTimeout(suggestionTimeout);
+            suggestionTimeout = setTimeout(() => {
+                showSearchSuggestions(this);
+            }, 300);
+        });
+    });
+}
+
+function showSearchSuggestions(input) {
+    // 这里可以添加搜索建议逻辑
+    const query = input.value.trim();
+    if (query.length > 2) {
+        // 创建搜索建议下拉菜单
+        console.log('搜索建议:', query);
+    }
+}
+
+// 情感标签动画
+function initEmotionTags() {
+    const emotionTags = document.querySelectorAll('.emotion-positive, .emotion-negative, .emotion-neutral');
+    
+    emotionTags.forEach(tag => {
+        tag.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1) rotate(2deg)';
+        });
+        
+        tag.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+}
 
 // 滚动效果
 function initScrollEffects() {
@@ -222,25 +406,163 @@ function initAnimations() {
     });
 }
 
-// 情感分析结果动画
+// 情感分析结果动画 - 增强版
 function animateEmotionScore(element, targetScore) {
-    const duration = 1000;
+    const duration = 2000;
     const start = performance.now();
     const startValue = 0;
+    
+    // 创建动画效果
+    element.style.fontSize = '1.2em';
+    element.style.fontWeight = 'bold';
+    element.style.color = getEmotionColor(targetScore);
     
     function animate(currentTime) {
         const elapsed = currentTime - start;
         const progress = Math.min(elapsed / duration, 1);
         
-        const currentValue = startValue + (targetScore - startValue) * progress;
+        // 使用缓动函数
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        const currentValue = startValue + (targetScore - startValue) * easedProgress;
+        
         element.textContent = currentValue.toFixed(3);
+        
+        // 添加脉冲效果
+        const pulse = Math.sin(progress * Math.PI * 4) * 0.1 + 1;
+        element.style.transform = `scale(${pulse})`;
         
         if (progress < 1) {
             requestAnimationFrame(animate);
+        } else {
+            // 动画完成后的效果
+            element.style.transform = 'scale(1)';
+            addEmotionParticles(element, targetScore);
         }
     }
     
     requestAnimationFrame(animate);
+}
+
+// 根据情感分数获取颜色
+function getEmotionColor(score) {
+    if (score > 0.6) return '#28a745';
+    if (score < -0.6) return '#dc3545';
+    return '#6c757d';
+}
+
+// 添加情感粒子效果
+function addEmotionParticles(element, score) {
+    const color = getEmotionColor(score);
+    const rect = element.getBoundingClientRect();
+    
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            createEmotionParticle(rect, color);
+        }, i * 100);
+    }
+}
+
+function createEmotionParticle(rect, color) {
+    const particle = document.createElement('div');
+    particle.style.cssText = `
+        position: fixed;
+        left: ${rect.left + rect.width / 2}px;
+        top: ${rect.top + rect.height / 2}px;
+        width: 6px;
+        height: 6px;
+        background: ${color};
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1000;
+        animation: emotionParticle 1s ease-out forwards;
+    `;
+    
+    document.body.appendChild(particle);
+    
+    // 添加动画样式
+    if (!document.getElementById('emotion-particle-style')) {
+        const style = document.createElement('style');
+        style.id = 'emotion-particle-style';
+        style.textContent = `
+            @keyframes emotionParticle {
+                0% {
+                    transform: scale(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(1) rotate(360deg) translateY(-20px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    setTimeout(() => particle.remove(), 1000);
+}
+
+// 增强情感显示卡片
+function enhanceEmotionDisplay() {
+    const emotionCards = document.querySelectorAll('.emotion-card');
+    
+    emotionCards.forEach(card => {
+        // 添加悬停效果
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.05)';
+            this.style.boxShadow = '0 15px 35px rgba(0,0,0,0.2)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+        });
+        
+        // 添加点击涟漪效果
+        card.addEventListener('click', function(e) {
+            createClickRipple(e, this);
+        });
+    });
+}
+
+function createClickRipple(event, element) {
+    const ripple = document.createElement('div');
+    const rect = element.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+    
+    ripple.style.cssText = `
+        position: absolute;
+        left: ${x}px;
+        top: ${y}px;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+    `;
+    
+    element.style.position = 'relative';
+    element.style.overflow = 'hidden';
+    element.appendChild(ripple);
+    
+    if (!document.getElementById('ripple-style')) {
+        const style = document.createElement('style');
+        style.id = 'ripple-style';
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    setTimeout(() => ripple.remove(), 600);
 }
 
 // 搜索功能增强
@@ -322,5 +644,57 @@ window.addEventListener('error', function(e) {
 window.CloudyDay = {
     animateEmotionScore,
     initSearchEnhancements,
-    initDarkModeToggle
+    initDarkModeToggle,
+    enhanceEmotionDisplay,
+    createParticles,
+    initAdvancedInteractions
 };
+
+// 性能优化：使用 requestIdleCallback 进行非关键任务
+function initWithIdleCallback() {
+    if (window.requestIdleCallback) {
+        requestIdleCallback(() => {
+            initSearchEnhancements();
+            if (window.matchMedia('(min-width: 768px)').matches) {
+                // 仅在桌面端启用高级交互
+                initAdvancedInteractions();
+            }
+        });
+    } else {
+        // 回退方案
+        setTimeout(() => {
+            initSearchEnhancements();
+            initAdvancedInteractions();
+        }, 1000);
+    }
+}
+
+// 在DOM加载完成后调用性能优化的初始化
+document.addEventListener('DOMContentLoaded', function() {
+    initWithIdleCallback();
+});
+
+// 窗口调整大小时重新计算效果
+window.addEventListener('resize', debounce(function() {
+    // 重新计算粒子系统
+    const particles = document.querySelectorAll('.particles');
+    particles.forEach(p => p.remove());
+    
+    // 重新初始化粒子系统
+    setTimeout(() => {
+        initParticleSystem();
+    }, 300);
+}, 250));
+
+// 防抖函数
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
