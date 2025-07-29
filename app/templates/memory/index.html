@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}我的记忆 - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-memory"></i> 我的记忆</h2>
+    <a href="{{ url_for('memory.add_memory') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> 添加记忆
+    </a>
+</div>
+
+{% if memories %}
+    <div class="row">
+        {% for memory in memories %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ memory.title }}</h5>
+                        <p class="card-text text-muted">
+                            {{ memory.content[:100] }}
+                            {% if memory.content|length > 100 %}...{% endif %}
+                        </p>
+                        
+                        <!-- 情感分析结果 -->
+                        <div class="mb-2">
+                            <small class="badge bg-secondary">
+                                情感: <span class="{{ memory.get_emotion_color() }}">{{ memory.get_emotion_text() }}</span>
+                            </small>
+                        </div>
+                        
+                        <!-- 标签 -->
+                        {% if memory.get_tags_list() %}
+                            <div class="mb-3">
+                                {% for tag in memory.get_tags_list()[:3] %}
+                                    <span class="badge bg-light text-dark me-1"># {{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                {{ memory.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                            <a href="{{ url_for('memory.detail', memory_id=memory.id) }}" class="btn btn-sm btn-outline-primary">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-journal display-1 text-muted"></i>
+        <h4 class="text-muted mt-3">还没有记忆</h4>
+        <p class="text-muted">开始记录你的第一段回忆吧</p>
+        <a href="{{ url_for('memory.add_memory') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> 添加记忆
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}{{ memory.title }} - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">{{ memory.title }}</h4>
+                <a href="{{ url_for('memory.index') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> 返回列表
+                </a>
+            </div>
+            <div class="card-body">
+                <!-- 记忆内容 -->
+                <div class="memory-content mb-4">
+                    <div class="content-text">{{ memory.content|replace('\n', '<br>')|safe }}</div>
+                </div>
+                
+                <!-- 分析结果 -->
+                <div class="analysis-section border-top pt-4">
+                    <h5 class="mb-3"><i class="bi bi-analytics"></i> AI分析结果</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">情感分析</h6>
+                                    <div class="emotion-score">
+                                        <span class="display-6 {{ memory.get_emotion_color() }}">
+                                            {{ memory.get_emotion_text() }}
+                                        </span>
+                                        <p class="small text-muted mt-2">
+                                            情感分数: {{ "%.3f"|format(memory.emotion_score) }}
+                                            <br>
+                                            <small>(-1.0 到 1.0，负数表示消极情感)</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">关键词标签</h6>
+                                    {% if memory.get_tags_list() %}
+                                        <div class="tags-container">
+                                            {% for tag in memory.get_tags_list() %}
+                                                <span class="badge bg-primary me-1 mb-1"># {{ tag }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted small">暂无标签</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 时间信息 -->
+                <div class="time-info border-top pt-3 mt-4">
+                    <div class="row text-muted small">
+                        <div class="col-md-6">
+                            <i class="bi bi-calendar-plus"></i> 
+                            创建时间: {{ memory.created_at.strftime('%Y年%m月%d日 %H:%M') }}
+                        </div>
+                        {% if memory.updated_at != memory.created_at %}
+                        <div class="col-md-6">
+                            <i class="bi bi-calendar-check"></i> 
+                            更新时间: {{ memory.updated_at.strftime('%Y年%m月%d日 %H:%M') }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.memory-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.content-text {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid #007bff;
+}
+
+.emotion-score .display-6 {
+    font-weight: bold;
+}
+
+.tags-container .badge {
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}

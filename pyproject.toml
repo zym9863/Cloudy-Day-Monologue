@@ -1,7 +1,13 @@
 [project]
 name = "cloudy-day-monologue"
 version = "0.1.0"
-description = "Add your description here"
+description = "阴天独白 - 记忆回响与搁浅心事的情感应用"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "flask>=3.0.0",
+    "flask-sqlalchemy>=3.1.0",
+    "flask-migrate>=4.0.0",
+    "jieba>=0.42.0",
+    "snownlp>=0.12.0",
+]

@@ -1,0 +1,264 @@
+/* 阴天独白 - 主题样式 */
+
+/* 全局颜色变量 */
+:root {
+    --cloudy-primary: #6c757d;
+    --cloudy-secondary: #495057;
+    --cloudy-blue: #4a90a4;
+    --cloudy-light-blue: #87ceeb;
+    --cloudy-gray: #f8f9fa;
+    --cloudy-dark-gray: #343a40;
+    --cloudy-text: #495057;
+    --cloudy-muted: #6c757d;
+}
+
+/* 全局样式 */
+body.cloudy-theme {
+    font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    color: var(--cloudy-text);
+}
+
+/* 导航栏样式 */
+.bg-dark-blue {
+    background: linear-gradient(135deg, #4a90a4 0%, #2c3e50 100%) !important;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--cloudy-light-blue) !important;
+}
+
+/* 卡片样式 */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 首页英雄区域 */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="clouds" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23clouds)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-section .display-4,
+.hero-section .lead,
+.hero-section .btn {
+    position: relative;
+    z-index: 1;
+}
+
+/* 背景渐变样式 */
+.bg-gradient-cloudy {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 按钮样式 */
+.btn {
+    border-radius: 25px;
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4a90a4 0%, #2c3e50 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2c3e50 0%, #4a90a4 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(74, 144, 164, 0.4);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    border: none;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #138496 0%, #17a2b8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(23, 162, 184, 0.4);
+}
+
+/* 表单样式 */
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--cloudy-blue);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 164, 0.25);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* 标签样式 */
+.badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 15px;
+}
+
+/* 情感颜色 */
+.text-success { color: #28a745 !important; }
+.text-danger { color: #dc3545 !important; }
+.text-warning { color: #ffc107 !important; }
+.text-info { color: #17a2b8 !important; }
+.text-primary { color: #007bff !important; }
+.text-secondary { color: #6c757d !important; }
+
+/* 特殊元素样式 */
+.feature-icon {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poetry-section {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+/* 页脚样式 */
+footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #4a90a4 100%) !important;
+    margin-top: 3rem;
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem !important;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 2rem;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cloudy-blue);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cloudy-secondary);
+}
+
+/* Alert样式 */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 特殊文本效果 */
+.text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
+
+/* 心事卡片特殊样式 */
+.thought-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.9) 100%);
+    backdrop-filter: blur(10px);
+}
+
+/* 记忆卡片特殊样式 */
+.memory-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.95) 100%);
+}

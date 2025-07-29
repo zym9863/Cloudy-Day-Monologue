@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}阴天独白 - 记忆与心事的温柔归宿{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- 欢迎区域 -->
+    <div class="col-12 text-center mb-5">
+        <div class="hero-section bg-gradient-cloudy p-5 rounded-3 text-white">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="bi bi-cloud-drizzle me-2"></i>
+                阴天独白
+            </h1>
+            <p class="lead mb-4">
+                我拉着线 复习你给的温柔<br>
+                风筝在阴天搁浅，想念还在等待救援
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('memory.add_memory') }}" class="btn btn-light btn-lg">
+                    <i class="bi bi-journal-plus"></i> 记录记忆
+                </a>
+                <a href="{{ url_for('thoughts.add_thought') }}" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-heart"></i> 投递心事
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 功能介绍 -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="feature-icon mb-3">
+                    <i class="bi bi-memory display-1 text-primary"></i>
+                </div>
+                <h3 class="card-title">记忆回响</h3>
+                <p class="card-text text-muted">
+                    记录那些温柔的片段，让AI为你分析情感的波动。
+                    每一段文字都是心灵的回响，每一次回忆都值得被珍藏。
+                </p>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('memory.index') }}" class="btn btn-primary">
+                        <i class="bi bi-collection"></i> 查看我的记忆
+                    </a>
+                    <a href="{{ url_for('memory.add_memory') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-plus-circle"></i> 添加新记忆
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="feature-icon mb-3">
+                    <i class="bi bi-chat-heart display-1 text-info"></i>
+                </div>
+                <h3 class="card-title">搁浅心事</h3>
+                <p class="card-text text-muted">
+                    那些无法言说的心事，在这里找到归宿。
+                    匿名分享，温柔陪伴，让每一颗搁浅的心都能等到救援。
+                </p>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('thoughts.index') }}" class="btn btn-info">
+                        <i class="bi bi-compass"></i> 心事广场
+                    </a>
+                    <a href="{{ url_for('thoughts.add_thought') }}" class="btn btn-outline-info">
+                        <i class="bi bi-send"></i> 投递心事
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 诗意装饰 -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="text-center poetry-section p-4">
+            <blockquote class="blockquote text-muted">
+                <p class="mb-0 fst-italic">
+                    "读着我给你的伤害<br>
+                    距离是一种保护色彩<br>
+                    风筝在阴天搁浅<br>
+                    想念还在等待救援"
+                </p>
+            </blockquote>
+            <small class="text-muted">— 感谢音乐给予的灵感</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}投递心事 - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-send"></i> 投递心事
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>匿名投递</strong> - 你的心事将以匿名方式分享，没有人知道是你写的。
+                </div>
+                
+                <form method="POST">
+                    <div class="mb-4">
+                        <label for="content" class="form-label">你的心事 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="content" name="content" 
+                                rows="8" placeholder="写下那些无法言说的心事..." required></textarea>
+                        <div class="form-text">
+                            系统会自动分析情感类型，为你的心事添加情感标签
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="is_public" name="is_public" checked>
+                            <label class="form-check-label" for="is_public">
+                                <strong>公开显示</strong>
+                            </label>
+                            <div class="form-text">
+                                勾选后，你的心事会在心事广场中显示，让其他人看到并给予温暖。
+                                不勾选的心事只有你自己能看到。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="privacy-notice bg-light p-3 rounded mb-4">
+                        <h6><i class="bi bi-shield-check"></i> 隐私保护</h6>
+                        <ul class="small mb-0">
+                            <li>所有心事都是匿名投递，系统不会记录你的身份信息</li>
+                            <li>你可以在"我的心事"中查看自己投递的内容</li>
+                            <li>不公开的心事只有你能看到，绝对私密</li>
+                            <li>系统会对内容进行基本的情感分析，不会用于其他用途</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('thoughts.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> 返回广场
+                        </a>
+                        <button type="submit" class="btn btn-info">
+                            <i class="bi bi-send"></i> 投递心事
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 温馨提示 -->
+        <div class="card mt-4 border-0 bg-transparent">
+            <div class="card-body text-center">
+                <blockquote class="blockquote text-muted">
+                    <p class="mb-0 fst-italic">
+                        "风筝在阴天搁浅，想念还在等待救援"
+                    </p>
+                </blockquote>
+                <small class="text-muted">
+                    每一颗搁浅的心都值得被温柔对待
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 字数统计和情感提示
+document.getElementById('content').addEventListener('input', function() {
+    const content = this.value;
+    const length = content.length;
+    const formText = this.nextElementSibling;
+    
+    if (length > 0) {
+        formText.textContent = `已输入 ${length} 字。系统会自动分析情感类型，为你的心事添加情感标签`;
+    } else {
+        formText.textContent = '系统会自动分析情感类型，为你的心事添加情感标签';
+    }
+});
+</script>
+{% endblock %}

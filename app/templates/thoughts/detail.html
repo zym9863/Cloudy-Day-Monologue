@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}心事详情 - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <strong class="text-muted me-3">{{ thought.get_anonymous_name() }}</strong>
+                    <span class="badge {{ thought.get_emotion_color() }}">
+                        {{ thought.emotion_type }}
+                    </span>
+                </div>
+                <div>
+                    <a href="{{ url_for('thoughts.index') }}" class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="bi bi-arrow-left"></i> 返回广场
+                    </a>
+                    <a href="{{ url_for('thoughts.my_thoughts') }}" class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-journal-heart"></i> 我的心事
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- 心事内容 -->
+                <div class="thought-content mb-4">
+                    <div class="content-text">
+                        {{ thought.content|replace('\n', '<br>')|safe }}
+                    </div>
+                </div>
+                
+                <!-- 分析信息 -->
+                <div class="analysis-section border-top pt-4">
+                    <h6 class="mb-3"><i class="bi bi-heart-pulse"></i> 情感分析</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <div class="emotion-display">
+                                        <i class="bi bi-heart display-3 {{ thought.get_emotion_color() }}"></i>
+                                        <h5 class="mt-2 {{ thought.get_emotion_color() }}">
+                                            {{ thought.emotion_type }}
+                                        </h5>
+                                        <p class="text-muted small">
+                                            AI识别的情感类型
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">温暖回应</h6>
+                                    <p class="small text-muted mb-0">
+                                        {% if thought.emotion_type == '悲伤' %}
+                                            每一份悲伤都值得被理解。时间会慢慢抚平伤痛，而你并不孤单。
+                                        {% elif thought.emotion_type == '快乐' %}
+                                            感受到你的快乐！愿这份美好能够延续下去。
+                                        {% elif thought.emotion_type == '愤怒' %}
+                                            愤怒也是一种真实的情感。深呼吸，让心情慢慢平静下来。
+                                        {% elif thought.emotion_type == '焦虑' %}
+                                            焦虑的时候记得告诉自己：我可以的。一步一步来，不要着急。
+                                        {% elif thought.emotion_type == '怀念' %}
+                                            美好的回忆永远不会消失，它们是心灵的珍宝。
+                                        {% elif thought.emotion_type == '积极' %}
+                                            你的积极能量很有感染力！继续保持这份美好的心态。
+                                        {% elif thought.emotion_type == '消极' %}
+                                            低落的时候记得：这只是暂时的，明天的太阳依然会升起。
+                                        {% else %}
+                                            平静也是一种力量。在宁静中寻找内心的声音。
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 时间和匿名信息 -->
+                <div class="meta-info border-top pt-3 mt-4">
+                    <div class="row text-muted small">
+                        <div class="col-md-6">
+                            <i class="bi bi-calendar-heart"></i> 
+                            投递时间: {{ thought.created_at.strftime('%Y年%m月%d日 %H:%M') }}
+                        </div>
+                        <div class="col-md-6">
+                            <i class="bi bi-incognito"></i> 
+                            匿名身份: {{ thought.get_anonymous_name() }}
+                        </div>
+                    </div>
+                    
+                    {% if not thought.is_public %}
+                        <div class="alert alert-secondary mt-3">
+                            <i class="bi bi-eye-slash"></i>
+                            <strong>私密心事</strong> - 只有你自己能看到这条心事
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- 温暖寄语 -->
+        <div class="card mt-4 border-0 bg-transparent">
+            <div class="card-body text-center">
+                <blockquote class="blockquote text-muted">
+                    <p class="mb-0 fst-italic small">
+                        "每一颗搁浅的心都在等待救援，<br>
+                        而最好的救援，就是知道自己并不孤单。"
+                    </p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.thought-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.content-text {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 2rem;
+    border-radius: 1rem;
+    border-left: 4px solid #17a2b8;
+    position: relative;
+}
+
+.content-text::before {
+    content: '"';
+    font-size: 4rem;
+    color: #17a2b8;
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    opacity: 0.3;
+}
+
+.emotion-display i {
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}

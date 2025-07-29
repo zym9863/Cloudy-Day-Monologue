@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}心事广场 - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-compass"></i> 心事广场</h2>
+    <a href="{{ url_for('thoughts.add_thought') }}" class="btn btn-info">
+        <i class="bi bi-send"></i> 投递心事
+    </a>
+</div>
+
+<!-- 情感筛选 -->
+<div class="card mb-4">
+    <div class="card-body">
+        <h6 class="card-title">按情感筛选</h6>
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('thoughts.index') }}" 
+               class="btn btn-sm {{ 'btn-primary' if not current_filter else 'btn-outline-primary' }}">
+                全部
+            </a>
+            {% for emotion in ['悲伤', '快乐', '愤怒', '焦虑', '怀念', '积极', '消极', '平静'] %}
+                <a href="{{ url_for('thoughts.index', emotion=emotion) }}" 
+                   class="btn btn-sm {{ 'btn-primary' if current_filter == emotion else 'btn-outline-primary' }}">
+                    {{ emotion }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% if thoughts %}
+    <div class="row">
+        {% for thought in thoughts %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100 thought-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="anonymous-info">
+                                <strong class="text-muted">{{ thought.get_anonymous_name() }}</strong>
+                                <small class="text-muted d-block">
+                                    {{ thought.created_at.strftime('%m-%d %H:%M') }}
+                                </small>
+                            </div>
+                            <span class="badge {{ thought.get_emotion_color() }}">
+                                {{ thought.emotion_type }}
+                            </span>
+                        </div>
+                        
+                        <p class="card-text">
+                            {{ thought.content[:150] }}
+                            {% if thought.content|length > 150 %}...{% endif %}
+                        </p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-heart"></i> 
+                                {{ thought.created_at.strftime('%Y年%m月%d日') }}
+                            </small>
+                            <a href="{{ url_for('thoughts.detail', thought_id=thought.id) }}" 
+                               class="btn btn-sm btn-outline-info">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-chat-heart display-1 text-muted"></i>
+        <h4 class="text-muted mt-3">
+            {% if current_filter %}
+                没有找到 "{{ current_filter }}" 类型的心事
+            {% else %}
+                还没有人投递心事
+            {% endif %}
+        </h4>
+        <p class="text-muted">
+            {% if current_filter %}
+                试试其他情感类型吧
+            {% else %}
+                成为第一个分享心事的人
+            {% endif %}
+        </p>
+        <a href="{{ url_for('thoughts.add_thought') }}" class="btn btn-info">
+            <i class="bi bi-send"></i> 投递心事
+        </a>
+    </div>
+{% endif %}
+
+<style>
+.thought-card {
+    transition: transform 0.2s ease;
+}
+
+.thought-card:hover {
+    transform: translateY(-2px);
+}
+
+.anonymous-info strong {
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}搜索记忆 - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="bi bi-search"></i> 搜索记忆
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="GET" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" 
+                               name="q" value="{{ query }}" 
+                               placeholder="搜索标题、内容或标签...">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="bi bi-search"></i> 搜索
+                        </button>
+                    </div>
+                    <div class="form-text">
+                        可以搜索记忆标题、内容文本或者关键词标签
+                    </div>
+                </form>
+                
+                {% if query %}
+                    <div class="search-results">
+                        <h5 class="mb-3">
+                            搜索 "{{ query }}" 的结果 
+                            <span class="badge bg-secondary">{{ memories|length }} 条</span>
+                        </h5>
+                        
+                        {% if memories %}
+                            <div class="row">
+                                {% for memory in memories %}
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">{{ memory.title }}</h6>
+                                                <p class="card-text text-muted small">
+                                                    {{ memory.content[:80] }}
+                                                    {% if memory.content|length > 80 %}...{% endif %}
+                                                </p>
+                                                
+                                                <!-- 情感和标签 -->
+                                                <div class="mb-2">
+                                                    <small class="badge bg-light text-dark">
+                                                        {{ memory.get_emotion_text() }}
+                                                    </small>
+                                                    {% for tag in memory.get_tags_list()[:2] %}
+                                                        <small class="badge bg-primary ms-1"># {{ tag }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted">
+                                                        {{ memory.created_at.strftime('%Y-%m-%d') }}
+                                                    </small>
+                                                    <a href="{{ url_for('memory.detail', memory_id=memory.id) }}" 
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        查看
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-search display-1 text-muted"></i>
+                                <h5 class="text-muted mt-3">没有找到相关记忆</h5>
+                                <p class="text-muted">试试其他关键词吧</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-search display-1 text-muted"></i>
+                        <h5 class="text-muted mt-3">搜索你的记忆</h5>
+                        <p class="text-muted">输入关键词找到想要的记忆片段</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

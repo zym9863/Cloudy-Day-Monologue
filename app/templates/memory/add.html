@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}添加记忆 - 阴天独白{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-journal-plus"></i> 添加新记忆
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    记录那些值得回味的温柔片段，让AI为你分析其中的情感色彩。
+                </p>
+                
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">记忆标题 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               placeholder="为这段记忆起一个标题..." required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="content" class="form-label">记忆内容 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="content" name="content" 
+                                rows="8" placeholder="写下你的记忆片段..." required></textarea>
+                        <div class="form-text">
+                            系统会自动分析文本的情感倾向并提取关键词标签
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('memory.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> 返回
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> 保存记忆
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 字数统计
+document.getElementById('content').addEventListener('input', function() {
+    const content = this.value;
+    const length = content.length;
+    const formText = this.nextElementSibling;
+    
+    if (length > 0) {
+        formText.textContent = `已输入 ${length} 字。系统会自动分析文本的情感倾向并提取关键词标签`;
+    } else {
+        formText.textContent = '系统会自动分析文本的情感倾向并提取关键词标签';
+    }
+});
+</script>
+{% endblock %}
