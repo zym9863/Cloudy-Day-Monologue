@@ -15,9 +15,14 @@ def create_app(config_name=None):
     
     # 配置数据库
     basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(os.path.dirname(basedir), "instance", "database.db")}'
+    db_path = os.path.join(os.path.dirname(basedir), "instance", "database.db")
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'cloudy-day-monologue-2025'
+    
+    # 确保instance目录存在
+    instance_dir = os.path.dirname(db_path)
+    os.makedirs(instance_dir, exist_ok=True)
     
     # 初始化扩展
     db.init_app(app)
@@ -25,6 +30,14 @@ def create_app(config_name=None):
     
     # 导入模型
     from . import models
+    
+    # 确保数据库表存在
+    with app.app_context():
+        try:
+            db.create_all()
+            print("数据库表检查/创建完成")
+        except Exception as e:
+            print(f"数据库初始化错误: {e}")
     
     # 注册蓝图
     from .routes.memory import memory_bp

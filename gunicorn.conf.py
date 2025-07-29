@@ -35,6 +35,25 @@ worker_tmp_dir = "/dev/shm"  # 使用内存文件系统
 tmp_upload_dir = "/tmp"
 
 # 内存优化设置
+def on_starting(server):
+    """服务器启动时的钩子 - 初始化数据库"""
+    server.log.info("正在初始化数据库...")
+    try:
+        # 初始化数据库
+        import sys
+        import os
+        sys.path.insert(0, os.getcwd())
+        from init_db import init_database
+        
+        if init_database():
+            server.log.info("数据库初始化成功")
+        else:
+            server.log.error("数据库初始化失败")
+            raise Exception("Database initialization failed")
+    except Exception as e:
+        server.log.error(f"数据库初始化异常: {e}")
+        raise
+
 def when_ready(server):
     """服务器准备就绪时的钩子"""
     import gc
